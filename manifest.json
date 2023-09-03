@@ -20,8 +20,9 @@
         }
     ],
     "lang": "pt-BR",
+    "orientation": "portrait",
     "start_url": "/index.html",
     "display": "standalone",
     "background_color": "#d7d8d0",
-    "theme_color": "#d5ceb5"
+    "theme_color": "#d7d8d0"
 }

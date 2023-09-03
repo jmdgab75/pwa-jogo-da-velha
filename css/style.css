@@ -1,10 +1,20 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700;800&display=swap');
+
+
+body, h1, button {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #D7D8D0;
 }
 
 .container {
@@ -27,6 +37,7 @@ body {
     background-color: #fff;
     cursor: pointer;
     border: 1px solid #ccc;
+    border-radius: 15px;
 }
 
 .message {
@@ -38,8 +49,9 @@ body {
     margin-top: 20px;
     padding: 10px 20px;
     font-size: 18px;
-    background-color: #007bff;
+    background-color: #ABA58D;
     color: #fff;
     border: none;
     cursor: pointer;
+    border-radius: 15px;
 }
