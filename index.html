@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#d5ceb5">
+    <title>Calculadora de IMC</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="images/pwa-icon-512.png"/>
+    <script src="js/main.js"></script>
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+            margin: 20px auto;
+            max-width: 320px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 36px;
+            border: 2px solid #333;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jogo da Velha</h1>
+    <div id="board"></div>
+    <p id="status">Vez do Jogador X</p>
+    <button id="reset">Reiniciar</button>
+
+    <script>
+        const board = document.getElementById('board');
+        const status = document.getElementById('status');
+        const resetButton = document.getElementById('reset');
+
+        let currentPlayer = 'X';
+        let boardState = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        function checkWinner() {
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            for (const combo of winningCombinations) {
+                const [a, b, c] = combo;
+                if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
+                    gameActive = false;
+                    return boardState[a];
+                }
+            }
+
+            if (!boardState.includes('')) {
+                gameActive = false;
+                return 'Empate';
+            }
+
+            return null;
+        }
+
+        function handleClick(index) {
+            if (!gameActive || boardState[index] !== '') return;
+
+            boardState[index] = currentPlayer;
+            board.children[index].textContent = currentPlayer;
+            board.children[index].classList.add('cell-filled');
+
+            const winner = checkWinner();
+            if (winner) {
+                if (winner === 'Empate') {
+                    status.textContent = 'Empate!';
+                } else {
+                    status.textContent = `Jogador ${winner} venceu!`;
+                }
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                status.textContent = `Vez do Jogador ${currentPlayer}`;
+            }
+        }
+
+        function resetGame() {
+            boardState = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            currentPlayer = 'X';
+            status.textContent = 'Vez do Jogador X';
+            board.innerHTML = '';
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.addEventListener('click', () => handleClick(i));
+                board.appendChild(cell);
+            }
+        }
+
+        resetButton.addEventListener('click', resetGame);
+        resetGame();
+    </script>
+</body>
+</html>
+  </body>
+</html>
