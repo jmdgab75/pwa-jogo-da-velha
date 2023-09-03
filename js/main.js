@@ -1,72 +1,48 @@
-        const board = document.getElementById('board');
-        const status = document.getElementById('status');
-        const resetButton = document.getElementById('reset');
+let currentPlayer = 'X';
+let board = ['', '', '', '', '', '', '', '', ''];
+let gameOver = false;
 
-        let currentPlayer = 'X';
-        let boardState = ['', '', '', '', '', '', '', '', ''];
-        let gameActive = true;
-
-        function checkWinner() {
-            const winningCombinations = [
-                [0, 1, 2],
-                [3, 4, 5],
-                [6, 7, 8],
-                [0, 3, 6],
-                [1, 4, 7],
-                [2, 5, 8],
-                [0, 4, 8],
-                [2, 4, 6],
-            ];
-
-            for (const combo of winningCombinations) {
-                const [a, b, c] = combo;
-                if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
-                    gameActive = false;
-                    return boardState[a];
-                }
-            }
-
-            if (!boardState.includes('')) {
-                gameActive = false;
-                return 'Empate';
-            }
-
-            return null;
+function makeMove(index) {
+    if (board[index] === '' && !gameOver) {
+        board[index] = currentPlayer;
+        document.querySelector(`.cell:nth-child(${index + 1})`).textContent = currentPlayer;
+        
+        if (checkWinner()) {
+            document.getElementById('message').textContent = `Jogador ${currentPlayer} venceu!`;
+            gameOver = true;
+        } else if (board.every(cell => cell !== '')) {
+            document.getElementById('message').textContent = 'Empate!';
+            gameOver = true;
+        } else {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         }
+    }
+}
 
-        function handleClick(index) {
-            if (!gameActive || boardState[index] !== '') return;
+function checkWinner() {
+    const winningCombos = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ];
 
-            boardState[index] = currentPlayer;
-            board.children[index].textContent = currentPlayer;
-            board.children[index].classList.add('cell-filled');
-
-            const winner = checkWinner();
-            if (winner) {
-                if (winner === 'Empate') {
-                    status.textContent = 'Empate!';
-                } else {
-                    status.textContent = `Jogador ${winner} venceu!`;
-                }
-            } else {
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                status.textContent = `Vez do Jogador ${currentPlayer}`;
-            }
+    for (const combo of winningCombos) {
+        const [a, b, c] = combo;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            return true;
         }
+    }
 
-        function resetGame() {
-            boardState = ['', '', '', '', '', '', '', '', ''];
-            gameActive = true;
-            currentPlayer = 'X';
-            status.textContent = 'Vez do Jogador X';
-            board.innerHTML = '';
-            for (let i = 0; i < 9; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                cell.addEventListener('click', () => handleClick(i));
-                board.appendChild(cell);
-            }
-        }
+    return false;
+}
 
-        resetButton.addEventListener('click', resetGame);
-        resetGame();
+function resetGame() {
+    currentPlayer = 'X';
+    board = ['', '', '', '', '', '', '', '', ''];
+    gameOver = false;
+
+    document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+    document.getElementById('message').textContent = '';
+}
+
+resetGame();
